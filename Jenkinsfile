@@ -22,12 +22,14 @@ pipeline {
             environment {
                 SONAR_TOKEN = credentials('squ_a493c2c5fdf005e86adfac1ed4bc8c9e7a16b26b') // Replace with your Jenkins SonarQube token ID
             }
-            steps {
-                withSonarQubeEnv('SonarQube') { // Replace with your SonarQube installation name in Jenkins
-                    sh "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN"
-                }
-            }
+                steps {
+        sh "./gradlew sonarqube \
+            -Dsonar.projectKey=gradle-demo \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=$SONAR_TOKEN"
+    }
         }
+
 
         stage('Archive Artifact') {
             steps {
