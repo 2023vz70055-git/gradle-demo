@@ -1,14 +1,12 @@
 pipeline {
     agent any
-
-    tools {
-        gradle 'Gradle_7'
+    environment {
+        SONAR_TOKEN = credentials('sonar-token') // matches the Jenkins credential ID
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/2023vz70055-git/gradle-demo.git'
+                git url: 'https://github.com/2023vz70055-git/gradle-demo.git', branch: 'main'
             }
         }
 
@@ -19,31 +17,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                SONAR_TOKEN = credentials('squ_a493c2c5fdf005e86adfac1ed4bc8c9e7a16b26b') // Replace with your Jenkins SonarQube token ID
-            }
-                steps {
-        sh "./gradlew sonarqube \
-            -Dsonar.projectKey=gradle-demo \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=$SONAR_TOKEN"
-    }
-        }
-
-
-        stage('Archive Artifact') {
             steps {
-                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                // Use withSonarQubeEnv if SonarQube server is configured in Jenkins
+                withSonarQubeEnv('SonarQube') { // Name of SonarQube server in Jenkins
+                    sh "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=http://localhost:9000"
+                }
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
