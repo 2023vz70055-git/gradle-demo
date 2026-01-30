@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        SONAR_TOKEN = credentials('sonar-token') // matches the Jenkins credential ID
+        SONAR_TOKEN = credentials('squ_a493c2c5fdf005e86adfac1ed4bc8c9e7a16b26b') // matches the Jenkins credential ID
     }
     stages {
         stage('Checkout') {
