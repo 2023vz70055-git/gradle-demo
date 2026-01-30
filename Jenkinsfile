@@ -20,10 +20,10 @@ pipeline {
 
         stage('SonarQube Analysis') {
             environment {
-                SONAR_TOKEN = credentials('sonar-token') // Replace with your Jenkins SonarQube token ID
+                SONAR_TOKEN = credentials('squ_a493c2c5fdf005e86adfac1ed4bc8c9e7a16b26b') // Replace with your Jenkins SonarQube token ID
             }
             steps {
-                withSonarQubeEnv('MySonarQube') { // Replace with your SonarQube installation name in Jenkins
+                withSonarQubeEnv('SonarQube') { // Replace with your SonarQube installation name in Jenkins
                     sh "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN"
                 }
             }
