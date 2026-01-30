@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        gradle 'Gradle_7'     // Replace with your Jenkins Gradle installation name
+        gradle 'Gradle_7'
     }
 
     stages {
@@ -14,9 +14,18 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                // Linux/macOS agent
-                sh './gradlew clean build'
-                // Windows agent: use bat './gradlew.bat clean build'
+                sh './gradlew clean build jacocoTestReport'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            environment {
+                SONAR_TOKEN = credentials('sonar-token') // Replace with your Jenkins SonarQube token ID
+            }
+            steps {
+                withSonarQubeEnv('MySonarQube') { // Replace with your SonarQube installation name in Jenkins
+                    sh "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN"
+                }
             }
         }
 
