@@ -19,7 +19,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 // Use withSonarQubeEnv if SonarQube server is configured in Jenkins
-                withSonarQubeEnv('SonarQube-local') { // Name of SonarQube server in Jenkins
+                withSonarQubeEnv('SonarQube-Local') { // Name of SonarQube server in Jenkins
                     sh "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=http://localhost:9000"
                 }
             }
