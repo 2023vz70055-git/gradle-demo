@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'org.sonarqube' version '4.4.1.3373'
 }
 
 group = 'com.bits.mvn'
@@ -35,3 +36,15 @@ jacocoTestReport {
     }
 }
 
+/* ---------------- SONARQUBE CONFIG ---------------- */
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "gradle-demo"
+        property "sonar.projectName", "gradle-demo"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths",
+                "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
